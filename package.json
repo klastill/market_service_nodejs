@@ -1,7 +1,7 @@
 {
   "name": "Market-service",
   "version": "1.0.0",
-  "description": "market servie with nodejs",
+  "description": "market service with nodejs",
   "main": "index.js",
   "engine": {
     "node": "10.16.0",
@@ -16,7 +16,7 @@
   "author": "klastill",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
