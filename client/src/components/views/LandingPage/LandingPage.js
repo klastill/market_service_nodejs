@@ -6,6 +6,7 @@ import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import RadioBox from './Sections/RadioBox';
+import SearchFeature from './Sections/SearchFeature';
 import { categories, price } from './Sections/Datas';
 
 function LandingPage() {
@@ -14,6 +15,7 @@ function LandingPage() {
     const [Skip, setSkip] = useState(0);
     const [Limit, setLimit] = useState(4);
     const [PostSize, setPostSize] = useState(0);
+    const [SearchTerm, setSearchTerm] = useState('');
     const [Filters, setFilters] = useState({
         categories: [],
         price: []
@@ -101,10 +103,27 @@ function LandingPage() {
         setFilters(newFilters);
     };
 
+    const updateSearchTerm = (newSearchTerm) => {
+        let body = {
+            skip: 0,
+            limit: Limit,
+            filters: Filters,
+            searchTerm: newSearchTerm
+        };
+        
+        setSkip(0);
+        setSearchTerm(newSearchTerm);
+        getProducts(body);
+    };
+
     return (
         <div style={{ width: '75%', margin: '3em auto' }}>
             <div style={{ textAlign: 'center' }}>
                 <h2>Discover our products <Icon type='rocket' /></h2>
+            </div>
+
+            <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1em auto'}}>
+                <SearchFeature refreshFunction={updateSearchTerm} />
             </div>
 
             <Row gutter={16, 16}>
@@ -115,7 +134,7 @@ function LandingPage() {
                     <RadioBox list={price} handleFilters={filters => handleFilters(filters, "price")} />
                 </Col>
             </Row>
-             <br />
+            <br />
 
 
             <Row gutter={16, 16}>
