@@ -15,7 +15,7 @@ function CheckBox(props) {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    
+
     setChecked(newChecked);
     props.handleFilters(newChecked);
   };
@@ -35,7 +35,7 @@ function CheckBox(props) {
         </Panel>
       </Collapse>
     </div>
-  )
+  );
 }
 
-export default CheckBox
+export default CheckBox;
