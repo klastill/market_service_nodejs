@@ -68,4 +68,46 @@ router.get("/logout", auth, (req, res) => {
     });
 });
 
+router.post("/addToCart", auth, (req, res) => {
+    User.findOne({_id: req.user._id},
+        (err, userInfo) => {
+            let duplicate = false;
+            userInfo.cart.forEach((item) => {
+                if (item.id === req.body.productId) {
+                    duplicate = true;
+                }
+            });
+
+            if (duplicate) {
+                User.findOneAndUpdate(
+                    {_id: req.user._id, "cart.id": req.body.productId},
+                    {$inc: {"cart.$.quantity": 1}},
+                    {new: true},
+                    (err, userInfo) => {
+                        if (err) return res.status(400).json({success: false, err});
+                        res.status(200).send(userInfo.cart);
+                    }
+                );
+            } else {
+                User.findOneAndUpdate(
+                    {_id: req.user._id},
+                    {
+                        $push: {
+                            cart: {
+                                id: req.body.productId,
+                                quantity: 1,
+                                date: Date.now()
+                            }
+                        }
+                    },
+                    {new: true},
+                    (err, userInfo) => {
+                        if (err) return res.status(400).json({success: false, err});
+                        res.status(200).send(userInfo.cart);
+                    }
+                );
+            }
+        });
+});
+
 module.exports = router;
