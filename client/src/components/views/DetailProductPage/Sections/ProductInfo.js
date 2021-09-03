@@ -8,6 +8,7 @@ function ProductInfo(props) {
 
   const clickHandler = () => {
     dispatch(addToCart(props.detail._id));
+    alert('succeeded to add product');
   };
 
   return (
@@ -21,7 +22,7 @@ function ProductInfo(props) {
       <br />
       <br />
       <div style={{display: 'flex', justifyContent: 'center'}}>
-        <Button size="large" shape="round" type="danger" onclick={clickHandler}>
+        <Button size="large" shape="round" type="danger" onClick={clickHandler}>
           Add to cart
         </Button>
       </div>
