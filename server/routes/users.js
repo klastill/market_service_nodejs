@@ -164,12 +164,11 @@ router.post('/successBuy', auth, (req, res) => {
     transactionData.product = history;
 
     User.findOneAndUpdate(
-        { id: req.user._id },
+        { _id: req.user._id },
         { $push: { history: history }, $set: { cart: [] } },
         { new: true },
         (err, user) => {
             if (err) return res.json({ success: false, err });
-
             const payment = new Payment(transactionData);
             payment.save((err, doc) => {
                 if (err) return res.json({ success: false, err });
@@ -183,7 +182,7 @@ router.post('/successBuy', auth, (req, res) => {
                 });
 
                 async.eachSeries(products, (item, callback) => {
-                    Product.update(
+                    Product.updateMany(
                         { _id: item.id },
                         {
                             $inc:

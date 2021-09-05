@@ -2,13 +2,17 @@ import React from 'react';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 
 export default class Paypal extends React.Component {
-    render() {
+	state = {
+		finish: false,
+	}
+
+	render() {
 		const onSuccess = (payment) => {
 			// Congratulation, it came here means everything's fine!
-            		console.log("The payment was succeeded!", payment);
-
-                this.props.onSuccess(payment);
-            		// You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
+			console.log("The payment was succeeded!", payment);
+			this.setState({finish: true})
+			this.props.onSuccess(payment);
+			// You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
 		}
 
 		const onCancel = (data) => {
@@ -30,7 +34,7 @@ export default class Paypal extends React.Component {
 		// Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
 
 		const client = {
-			sandbox:    'AThl_kp_m6zeov9GK0m56OOhkPI1UOzo1EHW4DjuwvpFKMYJiaajpQQcCTi9zvbwtESUIBZgGrTEk5s3',
+			sandbox: 'AThl_kp_m6zeov9GK0m56OOhkPI1UOzo1EHW4DjuwvpFKMYJiaajpQQcCTi9zvbwtESUIBZgGrTEk5s3',
 			production: 'YOUR-PRODUCTION-APP-ID',
 		}
 		// In order to get production's app-ID, you will have to send your app to Paypal for approval first
@@ -40,21 +44,26 @@ export default class Paypal extends React.Component {
 		//   => https://developer.paypal.com/docs/classic/lifecycle/goingLive/
 
 		// NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
-        return (
-            <PaypalExpressBtn
-              env={env}
-              client={client}
-              currency={currency}
-              total={total}
-              onError={onError}
-              onSuccess={onSuccess}
-              onCancel={onCancel}
-              style={{
-                size: 'large',
-                color: 'blue',
-                shape: 'rect'
-              }}
-              />
-        );
-    }
+		return (
+			<div>
+				{!this.state.finish && (
+					<PaypalExpressBtn
+						env={env}
+						client={client}
+						currency={currency}
+						total={total}
+						onError={onError}
+						onSuccess={onSuccess}
+						onCancel={onCancel}
+						style={{
+							size: 'large',
+							color: 'blue',
+							shape: 'rect'
+						}}
+					/>
+				)}
+			</div>
+
+		);
+	}
 }
